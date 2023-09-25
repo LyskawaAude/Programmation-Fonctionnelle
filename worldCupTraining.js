@@ -2,10 +2,10 @@ const fs = require('fs');
 const readFile = (filePath) => {
   try {
     const fileJson = fs.readFileSync(filePath, 'utf-8');
-    const data = JSON.parse(fileJson);
-    return { error: null, data };
+    return JSON.parse(fileJson);
   } catch (error) {
-    return { error, data: [] };
+    console.error('Erreur de lecture du fichier JSON :', error);
+    return [];
   }
 };
 const countriesList = readFile('./data/countries.json');
@@ -13,7 +13,6 @@ const countriesList = readFile('./data/countries.json');
 
 // TP1 
 const filterFinalistCountries = (countries, predicate) => countries.filter(predicate);
-
 const winAtLeastOneFinal = (country) => country.victories.length > 0;
 const winEveryFinalPlayed = (country) => country.victories.length === country.finals.length;
 const reachedFinalWithoutWinning = (country) => country.victories.length === 0 && country.finals.length > 0;
@@ -39,8 +38,6 @@ const calculateWinPercentage = (country) => {
   if (finalsPlayed === 0) return 0;
   return (wins / finalsPlayed) * 100;
 };
-
-
 const sortByWins = (countries) => countries.sort((a, b) => countWins(b) - countWins(a));
 const sortByFinalsPlayed = (countries) => countries.sort((a, b) => countFinalsPlayed(b) - countFinalsPlayed(a));
 const sortByFinalsLost = (countries) => countries.sort((a, b) => countFinalsLost(b) - countFinalsLost(a));
