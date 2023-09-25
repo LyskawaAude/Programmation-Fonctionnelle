@@ -21,10 +21,10 @@ const finalistsWithEveryWin = filterFinalistCountries(countriesList, winEveryFin
 const finalistsWithNoWin = filterFinalistCountries(countriesList, reachedFinalWithoutWinning);
 const finalistsWithBothWinsAndLosses = filterFinalistCountries(countriesList, winAndLostFinals);
 
-// console.log("Pays qui ont au moins remporté une finale :", finalistsWithAtLeastOneWin);
-// console.log("Pays qui ont remporté chacune des finales qu'ils ont joué :", finalistsWithEveryWin);
-// console.log("Pays qui ont participé à une finale sans jamais en remporter :", finalistsWithNoWin);
-// console.log("Pays qui ont à la fois remporté au moins une finale ET perdu au moins une finale :", finalistsWithBothWinsAndLosses);
+console.log("Pays qui ont au moins remporté une finale :", finalistsWithAtLeastOneWin);
+console.log("Pays qui ont remporté chacune des finales qu'ils ont joué :", finalistsWithEveryWin);
+console.log("Pays qui ont participé à une finale sans jamais en remporter :", finalistsWithNoWin);
+console.log("Pays qui ont à la fois remporté au moins une finale ET perdu au moins une finale :", finalistsWithBothWinsAndLosses);
 
 // TP2 
 
