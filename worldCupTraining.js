@@ -1,11 +1,14 @@
 const fs = require('fs');
-const fileJson = fs.readFileSync('./data/countries.json', 'utf-8');
-const data = JSON.parse(fileJson);
-const countriesList = [];
-
-data.forEach(countryData => {
-  countriesList.push(countryData);
-});
+const readFile = (filePath) => {
+  try {
+    const fileJson = fs.readFileSync(filePath, 'utf-8');
+    const data = JSON.parse(fileJson);
+    return { error: null, data };
+  } catch (error) {
+    return { error, data: [] };
+  }
+};
+const countriesList = readFile('./data/countries.json');
 
 
 // TP1 
@@ -27,17 +30,9 @@ console.log("Pays qui ont participé à une finale sans jamais en remporter :", 
 console.log("Pays qui ont à la fois remporté au moins une finale ET perdu au moins une finale :", finalistsWithBothWinsAndLosses);
 
 // TP2 
-
-// Compter le nombre de victoires d'un pays
 const countWins = (country) => country.victories.length;
-
-// Compter le nombre de finales jouées par un pays
 const countFinalsPlayed = (country) => country.finals.length;
-
-// Compter le nombre de finales perdues par un pays
 const countFinalsLost = (country) => countFinalsPlayed(country) - countWins(country);
-
-// Calculer le taux de réussite en finale d'un pays
 const calculateWinPercentage = (country) => {
   const wins = countWins(country);
   const finalsPlayed = countFinalsPlayed(country);
@@ -45,16 +40,10 @@ const calculateWinPercentage = (country) => {
   return (wins / finalsPlayed) * 100;
 };
 
-// Classer les pays par nombre de victoires
+
 const sortByWins = (countries) => countries.sort((a, b) => countWins(b) - countWins(a));
-
-// Classer les pays par nombre de finales jouées
 const sortByFinalsPlayed = (countries) => countries.sort((a, b) => countFinalsPlayed(b) - countFinalsPlayed(a));
-
-// Classer les pays par nombre de finales perdues
 const sortByFinalsLost = (countries) => countries.sort((a, b) => countFinalsLost(b) - countFinalsLost(a));
-
-// Classer les pays par taux de réussite en finale
 const sortByWinPercentage = (countries) => countries.sort((a, b) => calculateWinPercentage(b) - calculateWinPercentage(a));
 
 // Quelle équipe a remporté le plus de Coupe du Monde ?
