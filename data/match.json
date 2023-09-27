@@ -2,28 +2,23 @@
   "matches": [
     {
       "team1": "Équipe A",
-      "team2": "Équipe B",
-      "result": "1"
+      "team2": "Équipe B"    
     },
     {
       "team1": "Équipe C",
-      "team2": "Équipe D",
-      "result": "X"
+      "team2": "Équipe D"
     },
     {
       "team1": "Équipe E",
-      "team2": "Équipe F",
-      "result": "2"
+      "team2": "Équipe F"
     },
     {
       "team1": "Équipe G",
-      "team2": "Équipe H",
-      "result": "1"
+      "team2": "Équipe H"
     },
     {
       "team1": "Équipe I",
-      "team2": "Équipe J",
-      "result": "2"
+      "team2": "Équipe J"
     }
   ],
   "odds": {

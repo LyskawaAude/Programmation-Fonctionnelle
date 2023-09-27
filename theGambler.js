@@ -8,10 +8,9 @@ const readJsonFile = async (filePath) => {
   }
 };
 
-// Fonction pure pour générer toutes les combinaisons possibles de résultats de matchs
-const generateCombinations = (numMatches) => {
+const generateCombinations = (nbMatches) => {
   let combinations = [[]];
-  for (let i = 0; i < numMatches; i++) {
+  for (let i = 0; i < nbMatches; i++) {
     const newCombinations = [];
     // Pour chaque combinaison précédente, ajouter '1', 'X' et '2' à la fin
     for (const previousCombination of combinations) {
@@ -24,47 +23,56 @@ const generateCombinations = (numMatches) => {
   return combinations; 
 };
 
-// Fonction pure pour calculer les gains potentiels pour une combinaison donnée
+// Calcule les gains potentiels pour une combinaison donnée
 const calculatePotentialGains = (combination, odds, matches) => {
-  let potentialGains = 1.0;
+  let potentialGains = 1;
   for (let i = 0; i < combination.length; i++) {
     const matchResult = combination[i];
     const match = matches[i];
     const matchOdds = odds[match.team1];
     if (matchResult === '1') {
-      potentialGains *= matchOdds['1']; // Multiplier par les cotes pour '1'
+      potentialGains *= matchOdds['1'];
     } else if (matchResult === 'X') {
-      potentialGains *= matchOdds['X']; // Multiplier par les cotes pour 'X'
+      potentialGains *= matchOdds['X'];
     } else if (matchResult === '2') {
-      potentialGains *= matchOdds['2']; // Multiplier par les cotes pour '2'
+      potentialGains *= matchOdds['2'];
     }
   }
   return potentialGains;
 };
 
-// Fonction principale exécutée de manière asynchrone
 (async () => {
   try {
     const matchData = await readJsonFile('./data/match.json');
     const matches = matchData.matches;
     const odds = matchData.odds;
-    const numberOfMatches = 2;
+    const numberOfMatches = 3;
     const combinations = generateCombinations(numberOfMatches);
-    // Calculer les gains possibles pour chaque combinaison en parallèle en utilisant Promise.all
+    const costPerCombination = 2;
+
     const results = await Promise.all(
       combinations.map((combination) => {
+        const potentialGains = calculatePotentialGains(combination, odds, matches);
+        const totalCost = costPerCombination;
+        
         return {
           combination,
-          potentialGains: calculatePotentialGains(combination, odds, matches),
+          potentialGains,
+          totalCost,
         };
       })
     );
 
     for (const result of results) {
-      console.log('Combination:', result.combination);
-      console.log('Potential Gains:', result.potentialGains);
+      console.log('--------------------------');
+      console.log('Combinaisons:', result.combination);
+      console.log('Gains possibles:', result.potentialGains);
       console.log('--------------------------');
     }
+
+    console.log('Nombre de combiné possible:', results.length);
+    console.log('Coût total des paris:', results.length * costPerCombination);
+    console.log('--------------------------');
   } catch (error) {
     console.error(error.message);
   }
