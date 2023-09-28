@@ -42,6 +42,7 @@ const calculatePotentialGains = (combination, odds, matches) => {
 };
 
 (async () => {
+  const text = []
   try {
     const matchData = await readJsonFile('./data/match.json');
     const matches = matchData.matches;
@@ -63,17 +64,32 @@ const calculatePotentialGains = (combination, odds, matches) => {
       })
     );
 
+    
+
     for (const result of results) {
-      console.log('--------------------------');
-      console.log('Combinaisons:', result.combination);
-      console.log('Gains possibles:', result.potentialGains);
-      console.log('--------------------------');
+      text.push('--------------------------');
+      text.push('Combinaisons:', result.combination);
+      text.push('Gains possibles:', result.potentialGains);
+      text.push('--------------------------');
     }
 
-    console.log('Nombre de combiné possible:', results.length);
-    console.log('Coût total des paris:', results.length * costPerCombination);
-    console.log('--------------------------');
+    text.push('Nombre de combiné possible:', results.length);
+    text.push('Coût total des paris:', results.length * costPerCombination);
+    text.push('--------------------------');
   } catch (error) {
     console.error(error.message);
   }
+
+  const writeResultsToFile = async (results, filePath) => {
+    try {
+      const resultString = text.join('\n');
+      await fs.writeFile(filePath, resultString, 'utf-8');
+      console.log(`Les résultats ont été enregistrés dans le fichier "${filePath}"`);
+    } catch (error) {
+      console.error('Erreur lors de l\'écriture dans le fichier :', error);
+    }
+  };
+
+  await writeResultsToFile(text, 'resultsTheGambler.txt');
+
 })();

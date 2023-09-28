@@ -23,10 +23,12 @@ const finalistsWithEveryWin = filterFinalistCountries(countriesList, winEveryFin
 const finalistsWithNoWin = filterFinalistCountries(countriesList, reachedFinalWithoutWinning);
 const finalistsWithBothWinsAndLosses = filterFinalistCountries(countriesList, winAndLostFinals);
 
-console.log("Pays qui ont au moins remporté une finale :", finalistsWithAtLeastOneWin);
-console.log("Pays qui ont remporté chacune des finales qu'ils ont joué :", finalistsWithEveryWin);
-console.log("Pays qui ont participé à une finale sans jamais en remporter :", finalistsWithNoWin);
-console.log("Pays qui ont à la fois remporté au moins une finale ET perdu au moins une finale :", finalistsWithBothWinsAndLosses);
+const results = [];
+
+results.push("Pays qui ont au moins remporté une finale :" + JSON.stringify(finalistsWithAtLeastOneWin));
+results.push("Pays qui ont remporté chacune des finales qu'ils ont joué :" + JSON.stringify(finalistsWithEveryWin));
+results.push("Pays qui ont participé à une finale sans jamais en remporter :" + JSON.stringify(finalistsWithNoWin));
+results.push("Pays qui ont à la fois remporté au moins une finale ET perdu au moins une finale :" + JSON.stringify(finalistsWithBothWinsAndLosses));
 
 // TP2 
 const countWins = (country) => country.victories.length;
@@ -73,10 +75,22 @@ const getContinentWithMostWins = (countries) => {
   return sortedContinents[0];
 };
 
-console.log("Équipe qui a remporté le plus de Coupe du Monde :", getCountryWithMostWins(countriesList));
-console.log("Équipe qui a joué le plus de finales de Coupe du Monde :", getCountryWithMostFinalsPlayed(countriesList));
-console.log("Équipe qui a perdu le plus de finales de Coupe du Monde :", getCountryWithMostFinalsLost(countriesList));
-console.log("Équipe avec le meilleur taux de participation et de réussite en finale de Coupe du Monde :", getCountryWithBestWinPercentage(countriesList));
-console.log("Classement descendant des finalistes par ordre de victoires et de participations en finale de Coupe du Monde :", getDescendingFinalistsRanking(countriesList));
-console.log("Pays ayant disputé le plus de finales de Coupe du Monde :", getCountryWithMostFinalsPlayed(countriesList));
-console.log("Continent ayant remporté le plus de Coupe du Monde :", getContinentWithMostWins(countriesList));
+results.push("Équipe qui a remporté le plus de Coupe du Monde :" + JSON.stringify(getCountryWithMostWins(countriesList)));
+results.push("Équipe qui a joué le plus de finales de Coupe du Monde :" + JSON.stringify(getCountryWithMostFinalsPlayed(countriesList)));
+results.push("Équipe qui a perdu le plus de finales de Coupe du Monde :" + JSON.stringify(getCountryWithMostFinalsLost(countriesList)));
+results.push("Équipe avec le meilleur taux de participation et de réussite en finale de Coupe du Monde :" + JSON.stringify(getCountryWithBestWinPercentage(countriesList)));
+results.push("Classement descendant des finalistes par ordre de victoires et de participations en finale de Coupe du Monde :" + JSON.stringify(getDescendingFinalistsRanking(countriesList)));
+results.push("Pays ayant disputé le plus de finales de Coupe du Monde :" + JSON.stringify(getCountryWithMostFinalsPlayed(countriesList)));
+results.push("Continent ayant remporté le plus de Coupe du Monde :" + JSON.stringify(getContinentWithMostWins(countriesList)));
+
+const writeResultsToFile = (results, filePath) => {
+  try {
+    const resultString = results.join('\n');
+    fs.writeFileSync(filePath, resultString, 'utf-8');
+    console.log(`Les résultats ont été enregistrés dans le fichier "${filePath}"`);
+  } catch (error) {
+    console.error('Erreur lors de l\'écriture dans le fichier :', error);
+  }
+};
+
+writeResultsToFile(results, 'resultsWorldCupTraining.txt');

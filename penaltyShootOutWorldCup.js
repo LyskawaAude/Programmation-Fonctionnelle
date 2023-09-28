@@ -1,3 +1,4 @@
+const fs = require('fs');
 // Fonction pour générer un tir aléatoire (0 ou 1)
 const shoot = () => Math.floor(Math.random() * 2);
 
@@ -46,9 +47,22 @@ const simulatePenaltiesLoop = (randomGenerator = shoot) => {
   return result;
 };
 
-console.log("Historique :");
+const results = [];
+results.push("Historique :");
 const penalties = simulatePenaltiesLoop();
-console.log("team1 :");
-console.log(penalties.team1);
-console.log("team2 :");
-console.log(penalties.team2);
+results.push("team1 :");
+results.push(JSON.stringify(penalties.team1));
+results.push("team2 :");
+results.push(JSON.stringify(penalties.team2));
+
+const writeResultsToFile = (results, filePath) => {
+  try {
+    const resultString = results.join('\n');
+    fs.writeFileSync(filePath, resultString, 'utf-8');
+    console.log(`Les résultats ont été enregistrés dans le fichier "${filePath}"`);
+  } catch (error) {
+    console.error('Erreur lors de l\'écriture dans le fichier :', error);
+  }
+};
+
+writeResultsToFile(results, 'resultsPenaltyShootOutWorldCup.txt');
